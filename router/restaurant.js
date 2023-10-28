@@ -3,6 +3,7 @@ import Restaurant from "../models/Restaurant.js";
 
 const restaurantRouter = express.Router();
 
+//Insert a new Restaurant
 restaurantRouter.post("/", async (req, res) => {
     try{
         const response = await Restaurant.create(req.body);
@@ -12,6 +13,7 @@ restaurantRouter.post("/", async (req, res) => {
     }
 })
 
+//https://crossoverbackend.onrender.com/api/restaurant
 
 restaurantRouter.get("/restaurant", async (req, res) => {
     try{
@@ -32,6 +34,8 @@ restaurantRouter.get("/restaurant/:_id", async (req, res) => {
     }
 })
 
+
+//e.g. https://crossoverbackend.onrender.com/api/restaurant/filter/chez%20fernand
 restaurantRouter.get("/restaurant/filter/:name", async (req, res) => {
     const {name} = req.params
     const param = name.replace("%20", "+")
@@ -56,6 +60,7 @@ try{
 }
 })
  
+//e.g. https://crossoverbackend.onrender.com/api/french
 restaurantRouter.get("/:tags", async (req, res) => {
     const {tags} = req.params
 
@@ -70,6 +75,7 @@ restaurantRouter.get("/:tags", async (req, res) => {
     }
 })
 
+//e.g. https://crossoverbackend.onrender.com/api/city/berlin
 restaurantRouter.get("/city/:city", async (req, res) => {
     const {city} = req.params
 
