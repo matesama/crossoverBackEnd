@@ -114,29 +114,36 @@ restaurantRouter.get("/restaurant", async (req, res) => {
 
 restaurantRouter.get('/search', async (req, res) => {
     // Extract the tags and city from the query parameters
+    const {tags} = req.query
+    const {city} = req.query
     console.log(req.query.tags)
     console.log(req.query.city);
+    
     try {
 
-        const response = await Restaurant.find({location:{"location.city": req.query.city}})
+        /*const response = await Restaurant.find({location:{"location.city": req.query.city}})
         console.log(response);
-        res.json(response);
+        res.json(response);*/
 
-      /* // If both tags and city are provided, find places that match both
+       // If both tags and city are provided, find places that match both
        if (tags && city) {
-         const allQuery = await Restaurant.find({ 'tags': { $in: tags }, 'location.city': city });
+        const lowerTags = tags.charAt(0).toLowerCase() + tags.slice(1)
+        const upperCaseCity = city.charAt(0).toUpperCase() + city.slice(1)
+         const allQuery = await Restaurant.find({ 'tags': { $in: lowerTags }, 'location.city': upperCaseCity });
          res.json(allQuery);
        }
        
        // If only tags are provided, find restaurant that matches the tags
        else if (tags) {
-         const filterTags = await Restaurant.find({ "tags": tags });
-         res.json(filterTags);
+        const lowerTags = tags.charAt(0).toLowerCase() + tags.slice(1)
+        const filterTags = await Restaurant.find({ "tags": lowerTags });
+        res.json(filterTags);
        }
    
        // If only city is provided, find restaurant that matches the city
        else if (city) {
-         const filterCity = await Restaurant.find({ city: city });
+        const upperCaseCity = city.charAt(0).toUpperCase() + city.slice(1)
+        const filterCity = await Restaurant.find({ 'location.city': upperCaseCity });
          res.json(filterCity);
        }
    
@@ -144,7 +151,7 @@ restaurantRouter.get('/search', async (req, res) => {
        else {
          const restaurants = await Restaurant.find();
          res.json(restaurants);
-       }*/
+       }
     } catch (error) {
        console.error(error);
        res.status(500).send('Error retrieving restaurants');
